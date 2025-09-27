@@ -1,0 +1,22 @@
+[Unit]
+Description=Telegram Proxy Manager Bot
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/path/to/your/bot/directory
+ExecStart=/usr/bin/python3 /path/to/your/bot/directory/run.py
+Restart=always
+RestartSec=10
+
+# Переменные окружения
+Environment=PYTHONUNBUFFERED=1
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=proxy-bot
+
+[Install]
+WantedBy=multi-user.target
