@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Скрипт запуска Telegram Proxy Manager Bot
+Скрипт запуска Telegram Proxy Manager Bot для Windows
 Проверяет зависимости и запускает бота
 """
 
 import sys
-import subprocess
 import os
 from pathlib import Path
 
@@ -25,48 +24,13 @@ def check_dependencies():
         import aiohttp
         import aiofiles
         import psutil
+        import requests
         print("✅ Все Python зависимости установлены")
         return True
     except ImportError as e:
         print(f"❌ Отсутствует зависимость: {e}")
-        print("Установите зависимости: pip install -r requirements.txt")
+        print("Установите зависимости: install-missing.bat")
         return False
-
-def check_system_dependencies():
-    """Проверка системных зависимостей"""
-    import platform
-    
-    # На Windows системные зависимости не требуются
-    if platform.system() == "Windows":
-        print("✅ Windows: системные зависимости не требуются")
-        return True
-    
-    # Для Linux/Unix проверяем зависимости
-    dependencies = {
-        'dante': 'dante-server',
-        'shadowsocks': 'shadowsocks-libev'
-    }
-    
-    missing = []
-    
-    for name, package in dependencies.items():
-        try:
-            result = subprocess.run(['which', name], 
-                                  capture_output=True, 
-                                  text=True, 
-                                  check=True)
-            print(f"✅ {name} найден")
-        except subprocess.CalledProcessError:
-            print(f"❌ {name} не найден")
-            missing.append(package)
-    
-    if missing:
-        print(f"\nУстановите недостающие пакеты:")
-        print(f"Ubuntu/Debian: sudo apt install {' '.join(missing)}")
-        print(f"CentOS/RHEL: sudo yum install {' '.join(missing)}")
-        return False
-    
-    return True
 
 def check_env_file():
     """Проверка файла .env"""
@@ -75,7 +39,6 @@ def check_env_file():
         print("❌ Файл .env не найден")
         print("Создайте файл .env с содержимым:")
         print("BOT_TOKEN=your_bot_token_here")
-        print("# SERVER_IP будет определен автоматически")
         return False
     
     print("✅ Файл .env найден")
@@ -94,14 +57,13 @@ def show_detected_ip():
 
 def main():
     """Главная функция"""
-    print("🚀 Запуск Telegram Proxy Manager Bot")
+    print("🚀 Запуск Telegram Proxy Manager Bot (Windows)")
     print("=" * 50)
     
     # Проверки
     checks = [
         ("Версия Python", check_python_version),
         ("Python зависимости", check_dependencies),
-        ("Системные зависимости", check_system_dependencies),
         ("Файл конфигурации", check_env_file),
         ("IP сервера", show_detected_ip)
     ]
@@ -114,6 +76,11 @@ def main():
     
     if not all_passed:
         print("\n❌ Не все проверки пройдены. Исправьте ошибки и попробуйте снова.")
+        print("\n💡 Решения:")
+        print("1. Установите недостающие пакеты: install-missing.bat")
+        print("2. Создайте файл .env с токеном бота")
+        print("3. Запустите от имени администратора")
+        input("\nНажмите Enter для выхода...")
         sys.exit(1)
     
     print("\n✅ Все проверки пройдены!")
@@ -128,6 +95,7 @@ def main():
         print("\n👋 Бот остановлен пользователем")
     except Exception as e:
         print(f"\n❌ Ошибка запуска бота: {e}")
+        input("\nНажмите Enter для выхода...")
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -12,6 +12,6 @@ if exist venv\Scripts\activate.bat (
 
 REM Запуск бота
 echo 🤖 Запуск бота...
-python run.py
+python run-windows.py
 
 pause
