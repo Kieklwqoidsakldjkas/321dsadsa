@@ -33,9 +33,25 @@ python -m pip install --upgrade pip
 
 REM Установка зависимостей
 echo 📚 Установка Python зависимостей...
-pip install -r requirements.txt
+
+REM Сначала пробуем установить основные пакеты
+echo 🔧 Установка основных пакетов...
+pip install aiogram==3.2.0 aiohttp==3.9.1 aiofiles==23.2.1 python-dotenv==1.0.0 psutil==5.9.6 requests==2.31.0
+
+REM Если есть проблемы с cryptography, устанавливаем предкомпилированную версию
+echo 🔧 Установка cryptography...
+pip install --only-binary=all cryptography==41.0.7
+if %errorlevel% neq 0 (
+    echo ⚠️ Проблемы с cryptography, пробуем альтернативную установку...
+    pip install cryptography==41.0.7 --no-build-isolation
+)
+
+REM Проверяем установку
+echo 🔍 Проверка установленных пакетов...
+python -c "import aiogram, aiohttp, aiofiles, psutil, requests; print('✅ Основные пакеты установлены')"
 if %errorlevel% neq 0 (
     echo ❌ Ошибка установки зависимостей
+    echo 💡 Попробуйте запустить: pip install --upgrade pip setuptools wheel
     pause
     exit /b 1
 )

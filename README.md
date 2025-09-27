@@ -80,6 +80,7 @@ sudo yum install shadowsocks-libev
 **Для Windows:**
 - Установите Python 3.8+ с https://python.org
 - Системные зависимости не требуются (прокси запускаются через Python)
+- При проблемах с установкой: `fix-install.bat`
 
 ### 4. Настройка конфигурации
 
@@ -231,6 +232,39 @@ vless://uuid@ip:port?security=none&type=tcp#Название
 - dante-server (для SOCKS5)
 - shadowsocks-libev (для Shadowsocks)
 - Telegram Bot Token
+
+## 🆘 Решение проблем
+
+### Проблемы с установкой зависимостей на Windows
+
+**Ошибка с Rust/cryptography:**
+```cmd
+fix-install.bat
+```
+
+**Альтернативные решения:**
+1. Установите Visual C++ Build Tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+2. Используйте conda вместо pip:
+   ```cmd
+   conda install aiogram aiohttp aiofiles python-dotenv psutil requests
+   ```
+3. Установите пакеты по одному:
+   ```cmd
+   pip install aiogram
+   pip install aiohttp
+   pip install aiofiles
+   pip install python-dotenv
+   pip install psutil
+   pip install requests
+   ```
+
+**Проблемы с правами:**
+- Запустите командную строку от имени администратора
+- Или используйте `--user` флаг: `pip install --user -r requirements.txt`
+
+**Проблемы с Python:**
+- Убедитесь, что Python 3.8+ установлен
+- Проверьте, что pip обновлен: `python -m pip install --upgrade pip`
 
 ## Лицензия
 
